@@ -2,6 +2,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
 
+
 class PostsListView(ListView):
     model = Post
     template_name = 'blog/goodbye.html'
