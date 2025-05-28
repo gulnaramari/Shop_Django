@@ -109,6 +109,7 @@ class Product(models.Model):
         ordering = ["name", "description"]
         permissions = [
             ('can_unpublish_product', 'Может отменять публикацию продукта'),
+            ('can_delete_product', 'Может удалять продукт'),
         ]
 
 class Contacts(models.Model):

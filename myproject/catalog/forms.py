@@ -1,5 +1,6 @@
 import os
 from django import forms
+from django.forms import ModelForm
 
 from .models import Product
 from django.core.exceptions import ValidationError
@@ -31,7 +32,7 @@ def validate_image(image):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['name', 'description', 'image', 'category', 'purchase_price', 'created_at', 'updated_at', ]
+        fields = ['name', 'description', 'image', 'category', 'purchase_price', 'created_at', 'updated_at']
 
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
