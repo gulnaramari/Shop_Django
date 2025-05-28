@@ -1,10 +1,5 @@
 from django.contrib.auth.models import AbstractUser, Permission, Group
 from django.core.validators import RegexValidator
-from django.db import models
-
-from django.contrib.auth.models import AbstractUser
-
-from django.core.validators import RegexValidator
 
 from django.contrib.auth.models import BaseUserManager
 from django.db import models

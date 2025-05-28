@@ -17,6 +17,6 @@ class UserRegisterForm(UserCreationForm):
             raise forms.ValidationError('Номер телефона должен содержать только цифры.')
         return phone_number
 
-
-class CustomAuthenticationForm(AuthenticationForm):
-    username = forms.EmailField(label='Email')
+#
+# class CustomAuthenticationForm(AuthenticationForm):
+#     username = forms.EmailField(label='Email')
