@@ -10,7 +10,6 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 
 
-
 def home(request):
     return render(request, template_name="home.html")
 
