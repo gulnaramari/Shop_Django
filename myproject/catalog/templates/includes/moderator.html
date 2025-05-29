@@ -8,13 +8,14 @@
             <div class="modal-body">
                 <p>Вы действительно хотите удалить запись?</p>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                <form action="{% url 'catalog:delete_product' product.id %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Удалить продукт</button>
-                </form>
-            </div>
+            <div class="container mt-5">
+        <h2 class="text-center">Удалить продукт {{ product.name }}</h2>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Удалить</button>
+            <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary">Отмена</a>
+        </form>
+    </div>
         </div>
     </div>
 </div>
