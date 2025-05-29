@@ -10,14 +10,15 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                <form action="{% url 'delete_product' product.pk %}" method="post" >
+                <form action="{% url 'catalog:delete_product' product.id %}" method="post">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Удалить</button>
+                    <button type="submit" class="btn btn-danger">Удалить продукт</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="unpublishProduct" tabindex="-1" aria-labelledby="unpublishProductLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -30,7 +31,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
-                <form action="{% url 'product_unpublish' product.id %}" method="post">
+                <form action="{% url 'catalog:product_unpublish' product.id %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger">Снять</button>
                 </form>
