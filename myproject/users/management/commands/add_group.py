@@ -15,12 +15,7 @@ class Command(BaseCommand):
                 "can_unpublish_product",
                 "can_delete_product",
             ],
-            "Менеджер контента": [
-                "can_unpublish_blog",
-                "delete_blog",
-            ],
         }
-
         # Удаляем уже созданную группу если таковая имеется
         for group_name, permissions_list in group_list.items():
             is_exists = any([x.name == group_name for x in Group.objects.all()])
