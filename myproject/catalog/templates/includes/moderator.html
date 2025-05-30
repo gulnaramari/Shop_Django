@@ -1,0 +1,42 @@
+<div class="modal fade" id="deleteBlog" tabindex="-1" aria-labelledby="deleteBlogLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="deleteBlogLabel">Удаление</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Вы действительно хотите удалить запись?</p>
+            </div>
+            <div class="container mt-5">
+        <h2 class="text-center">Удалить продукт {{ product.name }}</h2>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Удалить</button>
+            <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary">Отмена</a>
+        </form>
+    </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="unpublishProduct" tabindex="-1" aria-labelledby="unpublishProductLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="unpublishProductLabel">Снять с публикации</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Вы действительно хотите снять опубликованный продукт?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Отмена</button>
+                <form action="{% url 'catalog:product_unpublish' product.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Снять</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

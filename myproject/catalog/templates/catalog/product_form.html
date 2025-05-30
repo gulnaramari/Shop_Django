@@ -1,0 +1,22 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Добавить товар{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="text-center">Редактировать</h2>
+        <form method="post" enctype="multipart/form-data">
+            <div class='col-6'>
+            <div class='card'>
+                <div class='card-body'>
+                {% csrf_token %}
+                {{ form.as_p }}  {# Автоматическое рендеринг полей формы #}
+
+                <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">Сохранить</a>
+                <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary">Отмена</a>
+                </div>
+            </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
