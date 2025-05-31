@@ -9,7 +9,7 @@
                 <p>Вы действительно хотите удалить запись?</p>
             </div>
             <div class="container mt-5">
-        <h2 class="text-center">Удалить продукт {{ product.name }}</h2>
+        <h2 class="text-center">Удалить продукт {{ object.name }}</h2>
         <form method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-primary">Удалить</button>

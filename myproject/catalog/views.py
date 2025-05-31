@@ -1,4 +1,3 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import ProductForm
@@ -31,6 +30,9 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 
     template_name = "catalog/product_form.html"
 
+    fields = ['title', 'publication_date', 'author']
+
+    permission_required = 'library.add_book'
     def get_context_data(self, **kwargs) -> dict:
         """Возвращает контекст для шаблона.
         Returns:

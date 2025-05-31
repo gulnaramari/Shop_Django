@@ -12,8 +12,8 @@
                 {% csrf_token %}
                 {{ form.as_p }}  {# Автоматическое рендеринг полей формы #}
 
-                <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">Сохранить</a>
-                <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary">Отмена</a>
+                   <a href="{% url 'catalog:product_list' %}" class="btn btn-primary">Сохранить</a>
+                   <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary">Отмена</a>
                 </div>
             </div>
             </div>

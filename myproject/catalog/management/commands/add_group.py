@@ -4,7 +4,7 @@ from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     help = """
-    Добавления моделей группы Модератора и Менеджера
+    Добавления моделей группы Модератора 
     """
 
     def handle(self, *args, **options):
