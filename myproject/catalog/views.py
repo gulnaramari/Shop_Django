@@ -87,35 +87,37 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('catalog:product_list')
 
 
-# class ProductDeleteView(LoginRequiredMixin, DeleteView):
-#     model = Product
-#     template_name = 'catalog/product_confirm_delete.html'
-#     success_url = reverse_lazy('catalog:product_list')
-#     context_object_name = "product"
-#
-#     @method_decorator(permission_required('products.delete_product', raise_exception=True))
-#     def dispatch(self, request, *args, **kwargs):
-#         product = self.get_object()
-#
-#         # Проверяем, что пользователь либо владелец, либо имеет право на удаление
-#         if product.owner != request.user and not request.user.has_perm('products.delete_product'):
-#             raise PermissionDenied("Вы не можете удалить этот продукт.")
-#
-#         return super().dispatch(request, *args, **kwargs)
-
-class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
+    template_name = 'catalog/product_confirm_delete.html'
     success_url = reverse_lazy('catalog:product_list')
     context_object_name = "product"
-    permission_required = "catalog.can_delete_product"
 
-    def has_permission(self) -> bool:
-        product = get_object_or_404(Product, pk=self.kwargs["pk"])
-        return super().has_permission() or self.request.user == product.owner
+    @method_decorator(permission_required('products.delete_product', raise_exception=True))
+    def dispatch(self, request, *args, **kwargs):
+        product = self.get_object()
 
-    def delete(self, request, *args, **kwargs) -> HttpResponse:
-        messages.success(self.request, "Продукт успешно удалён!")
-        return super().delete(request, *args, **kwargs)
+        # Проверяем, что пользователь либо владелец, либо имеет право на удаление
+        if product.owner != request.user and not request.user.has_perm('products.delete_product'):
+            raise PermissionDenied("Вы не можете удалить этот продукт.")
+
+        return super().dispatch(request, *args, **kwargs)
+
+
+#
+# class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+#     model = Product
+#     success_url = reverse_lazy('catalog:product_list')
+#     context_object_name = "product"
+#     permission_required = "catalog.can_delete_product"
+#
+#     def has_permission(self) -> bool:
+#         product = get_object_or_404(Product, pk=self.kwargs["pk"])
+#         return super().has_permission() or self.request.user == product.owner
+#
+#     def delete(self, request, *args, **kwargs) -> HttpResponse:
+#         messages.success(self.request, "Продукт успешно удалён!")
+#         return super().delete(request, *args, **kwargs)
 
 # class ProductUnpublishView(LoginRequiredMixin, PermissionRequiredMixin, View):
 #     permission_required = "catalog.can_unpublish_product"

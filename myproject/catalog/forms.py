@@ -65,14 +65,6 @@ class ProductForm(forms.ModelForm):
                 'type': 'date'  # Указание типа поля как даты
             })
 
-    def clean(self):
-        cleaned_data = super().clean()
-        product_name = cleaned_data.get('name')
-        description = cleaned_data.get('description')
-        validate_no_forbidden_words(product_name)
-        validate_no_forbidden_words(description)
-
-
     def clean_name(self):
         name = self.cleaned_data.get("name")
         for word in FORBIDDEN_WORDS:
