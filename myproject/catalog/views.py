@@ -28,7 +28,7 @@ def contacts(request):
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
-    template_name = "catalog/product_form.html"
+    template_name = "catalog/add_product.html"
     success_url = reverse_lazy('catalog:product_list')
 
     def get_context_data(self, **kwargs) -> dict:
@@ -83,7 +83,7 @@ class ProductDetailView(DetailView):
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    template_name = 'catalog/product_form.html'
+    template_name = 'catalog/add_product.html'
     success_url = reverse_lazy('catalog:product_list')
 
 
