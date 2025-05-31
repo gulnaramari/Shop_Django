@@ -1,7 +1,6 @@
 {% extends "catalog/base.html" %}
 
  {% load my_tags %}
-{% block title %}Список продуктов{% endblock %}
  {% block content %}
 
  <div class="album py-5 bg-body-tertiary">
@@ -9,7 +8,7 @@
    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
        {% include 'catalog/header.html' %}
        {% for product in object_list %}
-       <div class="col-6">
+     <div class="col-6">
        <div class="card shadow-sm">
 
          <img src="{{ product.image | filter_media }}">
@@ -19,18 +18,15 @@
            <div class="d-flex justify-content-between align-items-center">
              <div class="btn-group">
 
-                {% if user.is_authenticated %}
-                   <a class="btn btn-primary" href="{% url 'catalog:update_product' product.pk %}" role="button">Редактировать</a>
-                   <a class="btn btn-primary" href="{% url 'catalog:delete_product' product.pk %}" role="button">Удалить</a>
-                {% endif %}
-                   <a class="btn btn-primary" href="{% url 'catalog:product_detail' product.pk %}" role="button">Посмотреть</a>
-
-             </div>
+                    <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-primary">Посмотреть детали</a>
+                    <a href="{% url 'catalog:update_product' product.pk %}" class="btn btn-primary">Редактировать</a>
+                    <a href="{% url 'catalog:delete_product' product.pk %}" class="btn btn-primary">Удалить продукт</a>
+               </div>
            </div>
          </div>
-        </div>
-        </div>
-       {% endfor %}
+       </div>
+     </div>
+     {% endfor %}
    </div>
    </div>
  </div>
@@ -38,6 +34,3 @@
                <a class="btn btn-primary" href="{% url 'catalog:add_product' %}" role="button">Добавить продукт</a>
                </div>
  {% endblock %}
-
-
-
