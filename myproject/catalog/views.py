@@ -1,6 +1,4 @@
 from django.http import HttpResponse
-from django.views import View
-
 from .forms import ProductForm
 from .models import Product, Contacts, Category
 from django.urls import reverse_lazy
@@ -44,7 +42,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ProductListView(ListView):
+class ProductListView(LoginRequiredMixin, ListView):
     model = Product
     template_name = 'catalog/product_list.html'
     context_object_name = 'products'
@@ -57,27 +55,11 @@ class ProductListView(ListView):
         return queryset
 
 
-class ProductDetailView(DetailView):
+@method_decorator(cache_page(60 * 15), name='dispatch')
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     template_name = 'catalog/product_detail.html'
     context_object_name = 'product'
-
-    def get_object(self, queryset=None):
-        pk = self.kwargs.get('pk')
-        cache_key = f'product_detail_{pk}'
-        product = cache.get(cache_key)
-
-        if product is None:
-            product = super().get_object(queryset)
-            cache.set(cache_key, product, timeout=60 * 5)  # 5 минут
-
-        return product
-
-    @method_decorator(cache_page(60 * 15), name='dispatch')  # Кэширование страницы на 15 минут
-    class ProductDetailView(DetailView):
-        model = Product
-        template_name = 'catalog/product_detail.html'
-        context_object_name = 'product'
 
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
@@ -86,55 +68,24 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'catalog/add_product.html'
     success_url = reverse_lazy('catalog:product_list')
 
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner:
+            return ProductForm
+        raise PermissionDenied
+
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'catalog/product_confirm_delete.html'
     success_url = reverse_lazy('catalog:product_list')
-    context_object_name = "product"
-
-    @method_decorator(permission_required('products.delete_product', raise_exception=True))
-    def dispatch(self, request, *args, **kwargs):
-        product = self.get_object()
-
-        # Проверяем, что пользователь либо владелец, либо имеет право на удаление
-        if product.owner != request.user and not request.user.has_perm('products.delete_product'):
-            raise PermissionDenied("Вы не можете удалить этот продукт.")
-
-        return super().dispatch(request, *args, **kwargs)
 
 
-#
-# class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
-#     model = Product
-#     success_url = reverse_lazy('catalog:product_list')
-#     context_object_name = "product"
-#     permission_required = "catalog.can_delete_product"
-#
-#     def has_permission(self) -> bool:
-#         product = get_object_or_404(Product, pk=self.kwargs["pk"])
-#         return super().has_permission() or self.request.user == product.owner
-#
-#     def delete(self, request, *args, **kwargs) -> HttpResponse:
-#         messages.success(self.request, "Продукт успешно удалён!")
-#         return super().delete(request, *args, **kwargs)
-
-# class ProductUnpublishView(LoginRequiredMixin, PermissionRequiredMixin, View):
-#     permission_required = "catalog.can_unpublish_product"
-#
-#     def has_permission(self) -> bool:
-#         product = get_object_or_404(Product, pk=self.kwargs["pk"])
-#         return super().has_permission() or self.request.user == product.owner
-#
-#     def post(self, request, pk) -> HttpResponse:
-#         product = get_object_or_404(Product, pk=pk)
-#         if product.status:
-#             product.status = False
-#             product.save()
-#             messages.success(request, "Продукт снят с публикации.")
-#         else:
-#             messages.warning(request, "Продукт уже снят с публикации.")
-#         return redirect("product", pk=pk)
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.owner or user.groups.filter(name= 'Модератор продуктов').exists():
+            return ProductForm
+        raise PermissionDenied
 
 
 @login_required

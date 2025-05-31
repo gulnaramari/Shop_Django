@@ -20,19 +20,18 @@
                 <p><strong>Дата создания:</strong> {{ product.created_at|default:"Неизвестно" }} </p>
                 <p><strong>Статус:</strong> {{ product.get_status_display }} </p>
 
-                <!-- Кнопка редактирования  для владельца или модератора -->
+                <!-- Кнопка редактирования  для модератора -->
                 <div class="btn-group">
                 {% if product.status %}
-                    {% if product.owner == user or perms.catalog.can_unpublish_product %}
-                       <a class="btn btn-danger btn-lg btn-block mb-3" href="{% url 'catalog:product_list' %}" role="button">Снять с публикации</a>
-
+                    {% if perms.catalog.can_unpublish_product %}
+                       <a class="btn btn-danger btn-lg btn-block mb-3" href="{% url 'catalog:unpublish_product' product.pk %}" role="button">Снять с публикации</a>
                     {% endif %}
                {% endif %}
-                    </div>
+               </div>
 
+            </div>
         </div>
-    </div>
-<div class="btn-group">
+        <div class="btn-group">
                <a class="btn btn-primary" href="{% url 'catalog:product_list' %}" role="button">Назад</a>
-  </div>
+        </div>
 {% endblock %}
