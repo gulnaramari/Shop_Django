@@ -13,6 +13,7 @@ urlpatterns = [
     path('product/<int:pk>/', views.ProductDetailView.as_view(), name="product_detail"),
     path('add_product/', views.ProductCreateView.as_view(), name="add_product"),
     path('product/<int:pk>/update/', views.ProductUpdateView.as_view(), name='update_product'),
-    path('product/<int:pk>/delete/', views.ProductDeleteView.as_view(), name='delete_product'),
-    path("product/<int:pk>/unpublish", views.ProductUnpublishView.as_view(), name="product_unpublish"),
+    path('post/<int:pk>/delete/', views.ProductDeleteView.as_view(), name='delete_product'),
+    path('post/<int:pk>/unpublish/', views.unpublish_product, name='unpublish_product'),
+    path('category/<int:category_id>/', views.ProductsByCategoryView.as_view(), name='prod_in_category'),
 ]

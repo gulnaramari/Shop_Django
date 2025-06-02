@@ -84,3 +84,8 @@ class ProductForm(forms.ModelForm):
             raise ValidationError("Цена не может быть отрицательной")
         return price
 
+    def clean_image(self):
+        image = self.cleaned_data.get('image')
+        if image:
+            validate_image(image)
+        return image

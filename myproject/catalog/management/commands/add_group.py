@@ -4,18 +4,23 @@ from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     help = """
-    Добавления моделей группы Модератора и Менеджера
+    Добавления моделей группы Модератора 
     """
 
     def handle(self, *args, **options):
 
         # Список групп и их права
         group_list = {
-            "Модератор продуктов": [
+            "Product Moderator": [
                 "can_unpublish_product",
                 "can_delete_product",
             ],
+            "Content Manager": [
+                "can_unpublish_blog",
+                "delete_blog",
+            ],
         }
+
         # Удаляем уже созданную группу если таковая имеется
         for group_name, permissions_list in group_list.items():
             is_exists = any([x.name == group_name for x in Group.objects.all()])

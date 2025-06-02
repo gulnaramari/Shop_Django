@@ -1,66 +1,37 @@
 {% extends 'catalog/base.html' %}
 
- {% block title %}Детали продукта: {{ object.name }}{% endblock %}
+{% block title %}Детали продукта: {{ product.name }}{% endblock %}
 
 {% block content %}
-    <div class="container mt-5">
-        <!-- Центрирование заголовка -->
-        <div class="col-lg-6 col-md-8 mx-auto">
-         <h2 class="fw-light">Информация о товаре</h2>
 
-       </div>
+        <!-- Центрирование заголовка -->
+        <div class="text-center mb-4">
+            {% include 'catalog/header.html' %}
+        </div>
+
         <!-- Выравнивание текста по левому краю -->
         <div class="row justify-content-start">
             <div class="col-md-6">
-                {% if object.image %}
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid mb-3 rounded">
-                {% else %}
-                    <p><em>Изображение отсутствует</em></p>
-                {% endif %}
-                <p><strong>Название продукта:</strong> {{ object.name }}</p>
-                <p><strong>Цена:</strong> {{ object.purchase_price|default:"Неизвестно" }} руб.</p>
-                <p><strong>Описание:</strong> {{ object.description|default:"Неизвестно" }} </p>
-                <p><strong>Категория:</strong> {{ object.category|default:"Неизвестно" }} </p>
-                <p><strong>Дата создания:</strong> {{ object.created_at|default:"Неизвестно" }} </p>
-                <p><strong>Статус:</strong> {{ object.get_status_display }} </p>
 
+                <p><strong>Название продукта:</strong> {{ product.name }}</p>
+                <p><strong>Цена:</strong> {{ product.purchase_price|default:"Неизвестно" }} руб.</p>
+                <p><strong>Описание:</strong> {{ product.description|default:"Неизвестно" }} </p>
+                <p><strong>Категория:</strong> {{ product.category|default:"Неизвестно" }} </p>
+                <p><strong>Дата создания:</strong> {{ product.created_at|default:"Неизвестно" }} </p>
+                <p><strong>Статус:</strong> {{ product.get_status_display }} </p>
 
-
-{% if product.status %}
-                {% if object.owner == user or perms.catalog.can_unpublish_product %}
-                <button class="btn btn-danger btn-lg btn-block mb-3" data-bs-toggle="modal" data-bs-target="#unpublishProduct">Снять с публикации</button>
-                {% endif %}
-            {% endif %}
-            <div class="btn-group mx-2">
-                {% if object.owner == user %}
-                <a href="{% url 'update_product' product.pk %}" class="btn btn-primary btn-lg btn-block mb-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-pencil-square mb-1" viewBox="0 0 16 16">
-                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
-                    </svg>
-                </a>
-                {% endif %}
-
-            </div>
-
-       {% if object.owner == user or perms.catalog.can_delete_product %}
-                <button class="btn btn-danger btn-lg btn-block mb-3" data-bs-toggle="modal" data-bs-target="#deleteBlog">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-trash-fill mb-1" viewBox="0 0 16 16">
-                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
-                    </svg>
-                </button>
-                {% endif %}
-
-        </div>
-    </div>
-</div>
-
-
-
-
-<div class="btn-group">
-               <a class="btn btn-primary" href="{% url 'catalog:product_list' %}" role="button">Назад</a>
+                <!-- Кнопка редактирования  для модератора -->
+                <div class="btn-group">
+                {% if product.status %}
+                    {% if perms.catalog.can_unpublish_product %}
+                       <a class="btn btn-danger btn-lg btn-block mb-3" href="{% url 'catalog:unpublish_product' product.pk %}" role="button">Снять с публикации</a>
+                    {% endif %}
+               {% endif %}
                </div>
 
-{% include 'includes/moderator.html'%}
+            </div>
+        </div>
+        <div class="btn-group">
+               <a class="btn btn-primary" href="{% url 'catalog:product_list' %}" role="button">Назад</a>
+        </div>
 {% endblock %}
